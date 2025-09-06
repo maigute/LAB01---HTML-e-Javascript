@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Verificador de Desempenho de Vendas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+    }
+    .resultado {
+      margin-top: 20px;
+      padding: 15px;
+      border-top: 1px solid #ccc;
+      background: #f0f8ff;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Verificador de Desempenho de Vendas</h2>
+
+  <form id="formVendas">
+    <label for="nome">Nome do Vendedor:</label>
+    <input type="text" id="nome" required>
+
+    <label for="totalVendido">Total vendido no mês (R$):</label>
+    <input type="number" id="totalVendido" min="0" step="0.01" required>
+
+    <label for="meta">Meta de vendas do mês (R$):</label>
+    <input type="number" id="meta" min="0" step="0.01" required>
+
+    <label for="comissao">Percentual de comissão (%):</label>
+    <input type="number" id="comissao" min="0" step="0.01" required>
+
+    <button type="button" onclick="verificarDesempenho()">Verificar Desempenho</button>
+  </form>
+
+  <div class="resultado" id="resultado"></div>
+
+  <script>
+    function verificarDesempenho() {
+      const nome = document.getElementById('nome').value.trim();
+      const totalVendido = parseFloat(document.getElementById('totalVendido').value);
+      const meta = parseFloat(document.getElementById('meta').value);
+      const comissaoPercent = parseFloat(document.getElementById('comissao').value);
+
+      if (!nome) {
+        alert('Por favor, insira o nome do vendedor.');
+        return;
+      }
+      if (isNaN(totalVendido) || totalVendido < 0 ||
+          isNaN(meta) || meta < 0 ||
+          isNaN(comissaoPercent) || comissaoPercent < 0) {
+        alert('Por favor, preencha todos os campos numéricos com valores válidos.');
+        return;
+      }
+
+      const metaAtingida = totalVendido >= meta;
+      const valorComissao = totalVendido * (comissaoPercent / 100);
+      const faltouParaMeta = meta - totalVendido;
+
+      let resultadoHTML = `<h3>Relatório de Desempenho de ${nome}:</h3>`;
+      resultadoHTML += `<p><strong>Situação da Meta:</strong> ${metaAtingida ? "Atingida!" : "Não Atingida"}</p>`;
+      resultadoHTML += `<p><strong>Valor da Comissão a Receber:</strong> R$ ${valorComissao.toFixed(2)}</p>`;
+
+      if (!metaAtingida) {
+        resultadoHTML += `<p><em>Faltou R$ ${faltouParaMeta.toFixed(2)} para atingir a meta.</em></p>`;
+      }
+
+      document.getElementById('resultado').innerHTML = resultadoHTML;
+    }
+  </script>
+
+</body>
+</html>
