@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Custo de Viagem</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      max-width: 500px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+    }
+    .resultado {
+      margin-top: 20px;
+      padding: 10px;
+      border-top: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Calculadora de Custo de Viagem</h2>
+
+  <form id="formViagem">
+    <label for="diaria">Preço da diária do hotel (R$):</label>
+    <input type="number" id="diaria" min="0" step="0.01" required>
+
+    <label for="noites">Número de noites de hospedagem:</label>
+    <input type="number" id="noites" min="0" required>
+
+    <label for="alimentacao">Custo médio diário com alimentação (R$):</label>
+    <input type="number" id="alimentacao" min="0" step="0.01" required>
+
+    <button type="button" onclick="calcularGastos()">Calcular Gastos</button>
+  </form>
+
+  <div class="resultado" id="resultado"></div>
+
+  <script>
+    function calcularGastos() {
+      const diaria = parseFloat(document.getElementById('diaria').value);
+      const noites = parseInt(document.getElementById('noites').value);
+      const alimentacao = parseFloat(document.getElementById('alimentacao').value);
+
+      if (isNaN(diaria) || isNaN(noites) || isNaN(alimentacao)) {
+        alert("Por favor, preencha todos os campos corretamente.");
+        return;
+      }
+
+      const custoHospedagem = diaria * noites;
+      const custoAlimentacao = alimentacao * noites;
+      const custoTotal = custoHospedagem + custoAlimentacao;
+
+      document.getElementById('resultado').innerHTML = `
+        <p><strong>Custo com Hospedagem:</strong> R$ ${custoHospedagem.toFixed(2)}</p>
+        <p><strong>Custo com Alimentação:</strong> R$ ${custoAlimentacao.toFixed(2)}</p>
+        <p><strong>Custo Total da Viagem:</strong> R$ ${custoTotal.toFixed(2)}</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
